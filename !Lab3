@@ -1,0 +1,37 @@
+В ходе выполнения 3 лабораторной работы был выполнен следующий код:
+
+для 1 шага:
+
+docker stop $(docker ps -a -q)
+
+docker container rm $(docker ps -a -q)
+
+docker image prune -a
+
+docker volume rm $(docker volume ls -q)
+
+docker system prune -a
+
+для 2 шага:
+
+docker run -d --name registry-ui -p 8000:80 jc21/registry-ui
+
+для 3 шага:
+
+docker run -d --name shipyard --link registry-ui:registry-ui -v /var/run/docker.sock:/var/run/docker.sock shipyard/shipyard
+
+Далее подкючилась к APIdocker: 
+a)открыла порт 8000
+ b)перешела в pwd 
+c)ввела логин и пароль по умолчанию 
+d)добавила реестр docker
+
+для 4 шага:
+
+docker run -d -p 80:80 --name my-apache httpd:latest
+
+docker exec -it my-apache /bin/bash
+
+ulimit -n 1024
+
+Эта команда установит максимальное количество открытых файлов в 1024
