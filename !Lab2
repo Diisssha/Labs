@@ -1,0 +1,17 @@
+В ходе выполнения 2 лабораторной работы был использован код :
+
+docker pull nginx
+
+touch buba.html
+
+apk update && apk add nano
+
+nano buba.html
+
+docker run -d -p 80:80 nginx
+
+docker cp buba.html confident\_faraday:/usr/share/nginx/html/buba.html
+
+docker pull httpd
+
+docker cp /local/path/to/your/buba.html confident\_faraday:/usr/local/apache2/htdocs/buba.html
