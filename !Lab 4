@@ -1,0 +1,46 @@
+Сначала я создала HTML файл, с базовым кодом и добавила в тело обычный JS скрипт, где  показывается время, которое пользователь провёл на странице сайта.
+
+<!doctype html>
+
+<html lang="en">
+<head>
+<script language="javascript">
+startdate = new Date();
+clockStart = startdate.getTime();
+function initStopwatch() {
+  var thisTime = new Date();
+  return (thisTime.getTime() - clockStart)/1000;
+}
+function getSecs() {
+  var tSecs = Math.round(initStopwatch());
+  var iSecs = tSecs % 60;
+  var iMins = Math.round((tSecs-30)/60);
+  var sSecs ="" + ((iSecs > 9) ? iSecs : "0" + iSecs);
+  var sMins ="" + ((iMins > 9) ? iMins : "0" + iMins);
+  document.getElementById("timer-counter").innerHTML = sMins+":"+sSecs;
+  setTimeout('getSecs()', 1000);
+}
+</script>
+</head>
+
+<body onLoad="getSecs()">
+You are on this site:
+ <span id='timer-counter' style='color:red;font-size:150%;font-weight:bold;'></span>
+ minutes/seconds.
+</body>
+</html>
+
+2. Создала dockerfile, используя 
+echo $null dockerfile
+затем отредактировала его с помощью этих команд:
+
+FROM nginx
+COPY js.html /usr/share/nginx/html
+COPY style.css /usr/share/nginx/html
+COPY script.js /usr/share/nginx/html
+
+создала docker образ:
+
+docker build -t js
+
+
