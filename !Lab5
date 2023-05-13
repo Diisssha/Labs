@@ -1,0 +1,21 @@
+Сначала, в проекте из предыдущей работы, я нашла папку для Volume. Внутри контейнера изменила Dockerfile командой 
+"VOLUME" указав путь VOLUME /app. 
+Далее создала образ, используя измененный Dockerfile, прописала команду 
+docker build -t nginx-dock. 
+Далее я создала volume с помощью команды
+docker volume create storage. 
+Чтобы запустить контейнер с подключенным Volume, прописала команду 
+docker run, 
+указав
+-v для подключения Volume 
+-p для привязки порта: docker run -v storage:/app -p 8080:80 nginx.
+Файлы из Volume  доступны внутри контейнера по пути /app,
+файл index.html  доступен по пути /app/index.html.
+Для копирования файла index.html внутрь Volume, использовала временный контейнер с образом alpine
+и командой sh -c , чтобы команды выполнялись внутри контейнера
+docker run -v storage:/app -v /Users/Win10/desktop/laba5:/data --rm alpine sh -c "cp /data/index.html /app/". 
+Проверила наличие файла командой
+docker run -v storage:/app --rm alpine sh -c "ls /app". 
+Файл index.html загружен в Volume.
+
+
