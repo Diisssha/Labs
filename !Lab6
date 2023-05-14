@@ -1,0 +1,68 @@
+Сначала создала новую директорию для проекта VueJS
+Установила VueCLI, используя следующую команду:
+
+sudo npm install -g @vue/cli
+
+Создала новый проект VueJS с использованием VueCLI, прописав следующую команду:
+
+vue create my-vue-app
+
+Перешла в директорию проекта:
+
+cd my-vue-app
+
+Запустила проект VueJS для проверки его работоспособности:
+
+npm run serve
+
+Чтобы увидеть страницу Vuejs в браузере перешла по адресу http://localhost:8080
+ Для проекта VueJS создала новый докерфайл
+
+FROM node:12-slim as build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+
+ Собираем приложение VueJS
+RUN npm run build
+
+Ввела команду чтобы испльзовать образ Nginx, и разместить наше приложение
+FROM nginx:stable-alpine as production-stage
+
+Скопировала файлы Nginx-сервер
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+и конфигурации Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+Установила порт командой
+ENV PORT 80
+
+открыла порт
+EXPOSE 80
+
+Запустила nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+В новом файле nginx.conf заменила стандартную конфигурацию Nginx :
+
+server {
+    listen 80;
+    server_name localhost;
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+}
+сохранила все файлы и начала создавать контейнер 
+
+docker build -t my-vue-app .
+
+Наконец запустила приложение в контейнере:
+
+docker run -p 80:80 my-vue-app
+
+по адресу http://localhost:80 можно увидеть приложение VueJS, работающее в контейнере Docker и проксированное через веб-сервер nginx.
+
