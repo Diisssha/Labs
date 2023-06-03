@@ -1,0 +1,26 @@
+Практические задания для главы docker ч.2
+1
+что бы запустить контейнер со статической веб-страницей, Dockerfile будет выглядить так:
+
+FROM nginx:alpine
+
+COPY index.html /usr/share/nginx/html
+COPY style.css /usr/share/nginx/html
+COPY script.js /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+
+В данном Dockerfile используется базовый образ Nginx в версии Alpine, 
+далее скопировано три файла (index.html, style.css, script.js) 
+в директорию /usr/share/nginx/html, которая является корневой директорией для Nginx-сервера.
+Затем был объявлен порт 80, который будет использоваться для взаимодействия с веб-страницей,
+и запуск Nginx-сервера через команду "nginx -g daemon off;", которая заставляет сервер работать в фоновом режиме.
+2.
+FROM node:14-alpin
+WORKDIR /app
+COPY ./src .
+RUN npm install --production
+CMD ["npm", "run", "prod"]```
